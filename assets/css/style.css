@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0 none;
+    text-decoration: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    position: relative;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    background: rgb(19, 19, 19);
+}
+
+#mineSweeper {
+    position: relative;
+    width: 480px;
+    height: 480px;
+    box-shadow: 0 0 2px gray, 0 2px 2px gray;
+    border: 1px solid white;
+}
+
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: auto;
+    z-index: 10;
+}
+
+#resetGame {
+    position: absolute;
+    width: 140px;
+    height: 35px;
+    left: -30px;
+    top: 90px;
+    color: gray;
+    border: none;
+    cursor: pointer;
+    font-size: 12pt;
+    line-height: 35px;
+    background-color: white;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all 5s ease;
+    border-radius: 4px;
+    background-position: 4% center;
+    background-size: 18%;
+    z-index: 8;
+}
+
+#resetGame:hover {
+    left: -142px;
+}
