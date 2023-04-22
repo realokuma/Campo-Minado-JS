@@ -23,8 +23,8 @@ body {
 
 #mineSweeper {
     position: relative;
-    width: 480px;
-    height: 480px;
+    width: 330px;
+    height: 330px;
     box-shadow: 0 0 2px gray, 0 2px 2px gray;
     border: 1px solid white;
 }

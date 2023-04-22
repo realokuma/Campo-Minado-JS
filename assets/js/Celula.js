@@ -1,14 +1,14 @@
 class Celula {
     constructor (x, y, w) {
         // define as coordenadas e a largura da célula
-        this.x = x;
-        this.y = y;
-        this.w = w;
+        this.x = x; // Posição x da célula
+        this.y = y; // Posição y da célula
+        this.w = w; // Largura e altura da célula
 
         // inicializa as propriedades flag e covered
         // flag é nula no início, e covered é definida como true
-        this.flag    = null;
-        this.covered = true;
+        this.flag    = null; // Sinalizador usado para marcar a célula (pode ser null, 'bombFlag', etc.)
+        this.covered = true; // Valor booleano que indica se a célula está coberta ou não
 
         // inicializa as propriedades neighborsList e neighborsCount
         // neighborsList é um array vazio que guardará as células vizinhas
@@ -17,12 +17,19 @@ class Celula {
         this.neighborsCount = 0;
     }
 
-    // verifica se as coordenadas do mouse estão dentro da área da célula
+    // A função selectionArea recebe as coordenadas x e y como argumentos
     selectionArea (x, y) {
+
+        // Define uma variável _el para armazenar o contexto do objeto que chama a função
         var _el = this;
 
+
+        // A função retorna verdadeiro se as coordenadas x e y estiverem dentro do retângulo definido pelo objeto
         return (
-            y >= _el.y * _el.w && y <= _el.y * _el.w + _el.w && x >= _el.x * _el.w && x <= _el.x * _el.w + _el.w
+            y >= _el.y * _el.w && // a coordenada y deve estar dentro do limite superior e inferior do objeto
+            y <= _el.y * _el.w + _el.w && // a coordenada y deve estar dentro do limite superior e inferior do objeto
+            x >= _el.x * _el.w && // a coordenada x deve estar dentro do limite esquerdo e direito do objeto
+            x <= _el.x * _el.w + _el.w // a coordenada x deve estar dentro do limite esquerdo e direito do objeto
         );
     }
 

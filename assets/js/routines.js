@@ -200,16 +200,115 @@
 		return _el;
 	}
 
-    function tagBombsCovered (matriz, el) {
-        matriz.forEach(row => {
-            if (celula.neighborsCount === -1 && celula.flag) return;
-            if (celula.neighborsCount === -1 && !celula.flag) {
-                celula.covered = false;
-                celula.detonated = (celula === el); //celula atual foi a detonada
-            }
-            if (celula.neighborsCount >= 0 && celula.flag) {
-                celula.covered = false;
-            }
-        })
-    }
+	function tagBombsCovered (matriz, el) {
+		matriz.forEach(row => {
+			row.forEach(celula => {
+				if (celula.neighborsCount === -1 && celula.flag) return;
+
+				if (celula.neighborsCount === -1 && !celula.flag) {
+					celula.covered = false;
+					celula.detonated = (celula === el); //celula atual foi detonada.
+				}
+				
+				if (celula.neighborsCount >= 0 && celula.flag) {
+					celula.covered = false;
+				}
+			})
+		})
+	}
+
+	function checkVictory() {
+		if (clearIsUncovered()) {
+			setTimeout(function() {
+				alert('venceu');
+			}, 100);
+		}
+	}
+
+	function onClickGame (event) {
+		event.preventDefault();
+		var mouseX = (event.pageX || event.clientX) - content.offsetLeft;
+		var mouseY = (event.pageY || event.clientY) - content.offsetTop;
+
+		var _el = virginGame(selectedElement(mouseX, mouseY), mouseX, mouseY);
+
+		if (_el.covered && !_el.flag && !_el.suspect && noOneIsDetonated() && !clearIsUncovered()) {
+			if (_el.neighborsCount === -1) {
+				tagBombsCovered(tabuleiro, _el);
+			}
+
+			_el.revealIt(tabuleiro);
+			checkVictory();
+		}
+	}
+
+	function onDoubleClick (event) {
+		event.preventDefault();
+		var mouseX = (event.clientX || event.pageX) - content.offsetLeft;
+		var mouseY = (event.clientY || event.pageY) - content.offsetTop;
+
+		var _el = selectedElement(mouseX, mouseY);
+
+		if (!_el.covered && !_el.flag && !_el.suspect && noOneIsDetonated() && !clearIsUncovered()) {
+			for (var y = -1, howMany = 0; y <= 1; y++) {
+				if (!tabuleiro[_el.y + y])continue;
+
+				for (var x = -1; x <= 1; x++) {
+					var celula_vizinha = tabuleiro[_el.y + y][_el.x + x];
+
+					if (!celula_vizinha || !y && !x)continue;
+
+					if (celula_vizinha.flag === 'bombFlag') howMany++;
+				}
+			} 
+			if (howMany === _el.neighborsCount) {
+				clearAround(_el, tabuleiro);
+
+				checkVictory();
+			}
+		}
+	}
+
+	function clearAround(el, matriz) {
+		for (var i = -1; i <= 1; i++) {
+			if (!matriz[el.y + i])continue;
+
+			for (var j = -1; j<= 1; j++) {
+				var vizinha = matriz[el.y + i][el.x + j];
+
+				if (!vizinha || vizinha.flag === 'bombFlag')continue;
+
+				if (vizinha.neighborsCount === -1) {
+					
+					tagBombsCovered(matriz, vizinha);
+				}
+				vizinha.revealIt(matriz);
+			}
+		}
+	}
+
+	function onRightClickGame (event) {
+		event.preventDefault();
+		var mouseX = (event.clientX || event.pageX) - content.offsetLeft;
+		var mouseY = (event.clientY || event.pageY) - content.offsetTop;
+
+		var _el = selectedElement(mouseX, mouseY);
+
+		if (_el.covered && noOneIsDetonated() && !clearIsUncovered()) {
+			_el.flag = !_el.flag ? 'bombFlag' :
+			(_el.flag === 'bombFlag') ? 'suspect' : null;
+		}
+	}
+
+	function update (time = 0) {
+		draw();
+
+		requestAnimationFrame(update, canvas);
+	}
+
+	var image = new Image();
+	image.src = url_image;
+	image.onload = function() {
+		createCanvas(330, 330);
+	}
 } ());
