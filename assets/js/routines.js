@@ -1,6 +1,6 @@
 (function () {
 
-	var canvas, ctx, tileSize = 30, qnt_bombas = 40, tabuleiro;
+	var canvas, ctx, tileSize = 20.6, qnt_bombas = 10, tabuleiro;
 
 	var url_image = 'assets/img/minesweeper_graphs.png', content = document.getElementById('mineSweeper');
 
